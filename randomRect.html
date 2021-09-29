@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>class lesson</title>
+    <script>
+        window.addEventListener("load", loadHandler);
+        function loadHandler(evt) {
+            app()
+        }
+        function app() {
+            let canvas = document.getElementById("canvas");
+            let ctx = canvas.getContext("2d");
+            let numCircles = 2000;
+            ctx.fillStyle = "#FFFFFF";
+            let x0 = 100;
+            let y0 = 100;
+            let x1 = 300;
+            let y1 = 300;
+            ctx.fillRect(0, 0, canvas.width, canvas.height)
+            for (let i = 0; i < numCircles; i++) {
+                let t = i/(numCircles - 1);
+
+                let red = Math.floor(Math.random() * 255);
+                let blue = Math.floor(Math.random() * 255);
+                let green = Math.floor(Math.random() * 255);
+
+                ctx.strokeStyle = `rgba(${red}, ${green}, ${blue}, 0.2)`;
+                let x = x0 + t*(x1 - x0);
+                let y = y0 + t*(y1 - y0);
+                let rad = 100 + (.5 - .5*Math.cos(4*Math.PI*t))*(200-100)
+                ctx.beginPath();
+                ctx.arc(x, y, rad, 0, 2* Math.PI, true);
+                ctx.stroke();
+            }
+
+
+        }
+    </script>
+</head>
+<body>
+    <canvas id = "canvas" height="500" width="500"></canvas>
+</body>
+</html>

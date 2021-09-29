@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <style>
+      body {
+        background: #666666;
+        font-family: sans-serif;
+      }
+    </style>
+    <script type="text/javascript">
+        window.addEventListener("load", loadHandler);
+        function loadHandler(evt) {
+          app();
+        }
+        function app() {
+          let canvas1 = document.getElementById("canvas1");
+          console.log(canvas1.width);
+          let ctx = canvas1.getContext("2d");
+          ctx.fillStyle = "#ffffff";
+          ctx.fillRect(0, 0, canvas1.width, canvas1.height);
+
+          drawThing(100, 100, 700, 500, 50, 100);
+
+          function drawThing(x0, y0, x1, y1, minRad, maxRad) {
+            let numCircles = 2000;
+            for (let i = 0; i < numCircles; i++) {
+              let t = i/(numCircles - 1);
+              let red = Math.floor(Math.random()*255);
+              let green = Math.floor(Math.random()*255);
+              let blue = Math.floor(Math.random()*255);
+              // ctx.fillStyle = "rgba(" + red + "," + green + "," + blue + ",0.5)";
+              ctx.strokeStyle = `rgba(0, 0, 0, 0.1)`;
+              let x = x0 + t*(x1 - x0);
+              let y = y0 + t*(y1 - y0);
+              let rad = minRad + (0.5 - 0.5*Math.cos(4*Math.PI*t))*(maxRad - minRad);
+              // ctx.fillRect(x, y, 100, 100);
+              ctx.beginPath();
+              ctx.arc(x, y, rad, 0, 2*Math.PI, true);
+              // ctx.closePath();
+              ctx.stroke();
+            }
+          }
+        }
+    </script>
+  </head>
+  <body>
+    <canvas id="canvas1" width="800px" height="600px"></canvas>
+  </body>
+</html>

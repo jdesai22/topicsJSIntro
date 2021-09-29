@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <style>
+      body {
+        background: #666666;
+        font-family: sans-serif;
+      }
+    </style>
+    <script type="text/javascript">
+        window.addEventListener("load", loadHandler);
+        function loadHandler(evt) {
+          app();
+        }
+        function app() {
+          let canvas1 = document.getElementById("canvas1");
+          console.log(canvas1.width);
+          let ctx = canvas1.getContext("2d");
+          ctx.fillStyle = "#FFFFFF";
+          ctx.fillRect(0, 0, canvas1.width, canvas1.height);
+          for (let i = 0; i < 50; i++) {
+            let red = Math.floor(Math.random()*255);
+            let green = Math.floor(Math.random()*255);
+            let blue = Math.floor(Math.random()*255);
+            // ctx.fillStyle = "rgba(" + red + "," + green + "," + blue + ",0.5)";
+            ctx.fillStyle = `rgba(${red}, ${blue}, ${green}, 0.5)`
+            let x = Math.random()*canvas1.width;
+            let y = Math.random()*canvas1.height;
+            ctx.fillRect(x, y, 100, 100);
+            ctx.fillStyle = "#FFFFFF";
+          }
+        }
+    </script>
+  </head>
+  <body>
+    <p>Hello world!!!!</p>
+    <canvas id="canvas1" width="800px" height="600px"></canvas>
+  </body>
+</html>
