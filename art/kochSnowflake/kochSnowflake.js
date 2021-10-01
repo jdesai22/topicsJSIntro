@@ -25,7 +25,7 @@ let snowflake = function (length, depth) {
 let app = function () {
     ctx.translate(40, canvas.height/2)
     ctx.moveTo(0, 0)
-    snowflake(length, 4)
+    snowflake(length, 3)
     ctx.stroke();
 }
 
