@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <style>
+      body {
+        background: #666666;
+        font-family: sans-serif;
+      }
+    </style>
+    <script type="text/javascript">
+        window.addEventListener("load", loadHandler);
+        function loadHandler(evt) {
+          app();
+        }
+
+        function app() {
+          let canvas1 = document.getElementById("canvas1");
+          console.log(canvas1.width);
+          let ctx = canvas1.getContext("2d");
+
+          canvas1.addEventListener("mousedown", mouseDownHandler);
+          
+          let particles = [];
+
+          function mouseDownHandler(evt) {
+            var mouse = getMouse(evt);
+            makeRandomParticle(mouse.x, mouse.y);
+          }
+
+          function getMouse(evt) {
+            var bRect = canvas1.getBoundingClientRect();
+            var mouseX = (evt.clientX - bRect.left)*(canvas1.width/bRect.width);
+            var mouseY = (evt.clientY - bRect.top)*(canvas1.height/bRect.height);
+            return {x: mouseX, y:mouseY};
+        }
+
+          function makeParticles() {
+            for (let i = 0; i < 10; i++) {
+              makeRandomParticle();
+            }
+          }
+          
+
+          function makeRandomParticle(x, y) {
+            let red = Math.floor(Math.random()*256);
+            let green = Math.floor(Math.random()*256);
+            let blue = Math.floor(Math.random()*256);
+            let particleColor = `rgba(${red}, ${green}, ${blue}, 0.5)`;
+            let particle = {
+                x: x, 
+                y: y, 
+                rad: Math.random()*30 + 20,
+                color: particleColor,
+                velX: -8 + 16*Math.random(),
+                velY: -8 + 16*Math.random(),
+                lifeSpan: Math.floor(240 + 120*Math.random()),
+                age: 0,
+                dead: false,
+                updateMe: function() {
+                  // this.velX += -0.2 + Math.random()*0.4;
+                  // this.velY += -0.2 + Math.random()*0.4;
+                  this.age++;
+                  if (this.age > this.lifeSpan) {
+                    this.dead = true;
+                  }
+                  this.x += this.velX;
+                  this.y += this.velY;
+                  if (this.x  > canvas1.width - this.rad) {
+                      this.x  = canvas1.width - this.rad;
+                      this.velX *= -1;
+                  }
+                  if (this.x  < this.rad) {
+                      this.x  = this.rad;
+                      this.velX *= -1;
+                  }
+                  if (this.y  > canvas1.height - this.rad) {
+                      this.y  = canvas1.height - this.rad;
+                      this.velY *= -1;
+                  }
+                  if (this.y  < this.rad) {
+                      this.y  = this.rad;
+                      this.velY *= -1;
+                  }
+                },
+                drawMe: function() {
+                  ctx.fillStyle = this.color;
+                  ctx.beginPath();
+                  let adjustedRad = this.rad*(1 - this.age/this.lifeSpan);
+                  ctx.arc(this.x, this.y, adjustedRad, 0, Math.PI*2, true);
+                  ctx.fill();
+                }
+            }; // end of the particle definition
+            particles.push(particle);
+          }
+
+          init();
+
+          function init() {
+            drawBackground();
+            makeParticles();
+            setInterval(update, 1000/60);
+          }
+          
+          function drawBackground() {
+            ctx.fillStyle = "white";
+            ctx.fillRect(0,0,canvas1.width, canvas1.height);
+          }
+
+          function update() {
+            drawBackground();
+            for (let i = particles.length - 1; i > -1; i--) {
+              particles[i].updateMe();
+              if (particles[i].dead) {
+                // remove it from the list
+                particles.splice(i, 1);
+              }
+              else {
+                particles[i].drawMe();
+              }
+            }
+          }
+
+          
+        }
+    </script>
+  </head>
+  <body>
+    <canvas id="canvas1" width="800px" height="600px"></canvas>
+  </body>
+</html>
